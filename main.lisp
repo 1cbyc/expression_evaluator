@@ -12,3 +12,4 @@
          (/ (reduce #'/ (mapcar #'evaluate-expression args)))
          (t (error "Unknown operator: ~A" op)))))
     (t (error "Invalid expression: ~A" expr))))
+
