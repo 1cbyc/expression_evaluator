@@ -1,5 +1,5 @@
 # Makefile for Expression Evaluator
-# Provides easy commands for building, testing, and running the project
+# Provides easy commands for building, testing, and running the project yes
 
 # Variables
 SBCL = sbcl
