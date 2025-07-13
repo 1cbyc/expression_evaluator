@@ -16,8 +16,6 @@
 *.wx64fsl
 *.wx32fsl
 
-
-hide.c
-.hide
-hide
-docs/
+# Documentation files (private)
+docs/what-next.md
+docs/explanation.md
