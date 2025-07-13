@@ -1,30 +1,30 @@
-;; Expression Evaluator
-;; A comprehensive mathematical expression evaluator in Common Lisp
+;; expression evaluator
+;; a comprehensive mathematical expression evaluator in common lisp
 ;;
-;; This program demonstrates recursive expression evaluation
-;; using Lisp's natural list-based syntax for representing
+;; this program demonstrates recursive expression evaluation
+;; using lisp's natural list-based syntax for representing
 ;; mathematical expressions.
 
-;; Global environment for variables
+;; global environment for variables
 (defvar *environment* (make-hash-table :test 'equal)
-  "Global environment for storing variables and functions.")
+  "global environment for storing variables and functions.")
 
-;; Mathematical constants
+;; mathematical constants
 (defvar *constants* 
   (let ((table (make-hash-table :test 'equal)))
     (setf (gethash 'pi table) 3.14159265359)
     (setf (gethash 'e table) 2.71828182846)
     (setf (gethash 'inf table) most-positive-double-float)
     table)
-  "Mathematical constants.")
+  "mathematical constants.")
 
-;; Error handling utilities
+;; error handling utilities
 (defun expression-error (format-string &rest args)
-  "Signal a custom error for expression evaluation."
-  (error "Expression Error: ~?" format-string args))
+  "signal a custom error for expression evaluation."
+  (error "expression error: ~?" format-string args))
 
 (defun validate-expression (expr)
-  "Validate that an expression is well-formed."
+  "validate that an expression is well-formed."
   (cond
     ((numberp expr) t)
     ((symbolp expr) t)
@@ -34,43 +34,43 @@
           (every #'validate-expression (cdr expr))))
     (t nil)))
 
-;; Enhanced expression evaluator with more features
+;; enhanced expression evaluator with more features
 (defun evaluate-expression (expr)
-  "Evaluates a mathematical expression represented as a Lisp list.
+  "evaluates a mathematical expression represented as a lisp list.
    
-   Examples:
-   (evaluate-expression '(+ 2 3))     ; Returns 5
-   (evaluate-expression '(* 4 (+ 2 3))) ; Returns 20
-   (evaluate-expression '(/ 10 2))    ; Returns 5
-   (evaluate-expression '(- 10 3 2))  ; Returns 5
-   (evaluate-expression '(sin pi))     ; Returns 0
-   (evaluate-expression '(pow 2 3))   ; Returns 8
+   examples:
+   (evaluate-expression '(+ 2 3))     ; returns 5
+   (evaluate-expression '(* 4 (+ 2 3))) ; returns 20
+   (evaluate-expression '(/ 10 2))    ; returns 5
+   (evaluate-expression '(- 10 3 2))  ; returns 5
+   (evaluate-expression '(sin pi))     ; returns 0
+   (evaluate-expression '(pow 2 3))   ; returns 8
    
-   Supported operators: +, -, *, /, %, pow, sqrt
-   Supported functions: sin, cos, tan, log, exp, abs, floor, ceil
-   Supported constants: pi, e, inf
+   supported operators: +, -, *, /, %, pow, sqrt
+   supported functions: sin, cos, tan, log, exp, abs, floor, ceil
+   supported constants: pi, e, inf
    "
   (cond
-    ;; Base cases
+    ;; base cases
     ((numberp expr) expr)
     ((symbolp expr) 
      (cond
        ((gethash expr *environment*) (gethash expr *environment*))
        ((gethash expr *constants*) (gethash expr *constants*))
-       (t (expression-error "Undefined variable: ~A" expr))))
+       (t (expression-error "undefined variable: ~a" expr))))
     
-    ;; List expressions
+    ;; list expressions
     ((listp expr)
      (let ((op (car expr))
            (args (cdr expr)))
        
-       ;; Validate expression structure
+       ;; validate expression structure
        (unless (symbolp op)
-         (expression-error "Operator must be a symbol: ~A" op))
+         (expression-error "operator must be a symbol: ~a" op))
        
-       ;; Handle different operators
+       ;; handle different operators
        (case op
-         ;; Basic arithmetic
+         ;; basic arithmetic
          (+ (reduce #'+ (mapcar #'evaluate-expression args)))
          (- (if (= (length args) 1)
                 (- (evaluate-expression (car args)))
@@ -80,60 +80,60 @@
          (% (mod (evaluate-expression (car args)) 
                  (evaluate-expression (cadr args))))
          
-         ;; Power and root
+         ;; power and root
          (pow (expt (evaluate-expression (car args))
                     (evaluate-expression (cadr args))))
          (sqrt (sqrt (evaluate-expression (car args))))
          
-         ;; Trigonometric functions
+         ;; trigonometric functions
          (sin (sin (evaluate-expression (car args))))
          (cos (cos (evaluate-expression (car args))))
          (tan (tan (evaluate-expression (car args))))
          
-         ;; Logarithmic and exponential
+         ;; logarithmic and exponential
          (log (log (evaluate-expression (car args))))
          (exp (exp (evaluate-expression (car args))))
          
-         ;; Other mathematical functions
+         ;; other mathematical functions
          (abs (abs (evaluate-expression (car args))))
          (floor (floor (evaluate-expression (car args))))
          (ceil (ceiling (evaluate-expression (car args))))
          
-         ;; Variable assignment
+         ;; variable assignment
          (set (let ((var (car args))
                    (val (evaluate-expression (cadr args))))
                (setf (gethash var *environment*) val)
                val))
          
-         ;; Unknown operator
-         (t (expression-error "Unknown operator: ~A" op)))))
+         ;; unknown operator
+         (t (expression-error "unknown operator: ~a" op)))))
     
-    ;; Invalid expression
-    (t (expression-error "Invalid expression: ~A" expr))))
+    ;; invalid expression
+    (t (expression-error "invalid expression: ~a" expr))))
 
-;; Variable management
+;; variable management
 (defun set-variable (name value)
-  "Set a variable in the global environment."
+  "set a variable in the global environment."
   (setf (gethash name *environment*) value)
   value)
 
 (defun get-variable (name)
-  "Get a variable from the global environment."
+  "get a variable from the global environment."
   (gethash name *environment*))
 
 (defun list-variables ()
-  "List all variables in the environment."
+  "list all variables in the environment."
   (loop for key being the hash-keys of *environment*
         collect key))
 
 (defun clear-variables ()
-  "Clear all variables from the environment."
+  "clear all variables from the environment."
   (clrhash *environment*))
 
-;; Expression parsing utilities
+;; expression parsing utilities
 (defun parse-infix (infix-expr)
-  "Convert infix notation to prefix (Lisp) notation.
-   Basic implementation - can be extended for complex expressions."
+  "convert infix notation to prefix (lisp) notation.
+   basic implementation - can be extended for complex expressions."
   (cond
     ((atom infix-expr) infix-expr)
     ((= (length infix-expr) 1) (parse-infix (car infix-expr)))
@@ -144,90 +144,90 @@
        (list op (parse-infix left) (parse-infix right))))
     (t infix-expr)))
 
-;; Pretty printing
+;; pretty printing
 (defun pretty-print-expression (expr &optional (depth 0))
-  "Pretty print an expression with proper indentation."
+  "pretty print an expression with proper indentation."
   (let ((indent (make-string (* depth 2) :initial-element #\space)))
     (cond
-      ((atom expr) (format t "~A~A~%" indent expr))
-      (t (format t "~A(~A~%" indent (car expr))
+      ((atom expr) (format t "~a~a~%" indent expr))
+      (t (format t "~a(~a~%" indent (car expr))
          (dolist (arg (cdr expr))
            (pretty-print-expression arg (+ depth 1)))
-         (format t "~A)~%" indent)))))
+         (format t "~a)~%" indent)))))
 
-;; Example usage and testing
+;; example usage and testing
 (defun run-examples ()
-  "Run some example expressions to demonstrate the evaluator."
-  (format t "~%=== Expression Evaluator Examples ===~%")
+  "run some example expressions to demonstrate the evaluator."
+  (format t "~%=== expression evaluator examples ===~%")
   
   (let ((examples '(
-    ("Simple addition" (+ 2 3))
-    ("Simple multiplication" (* 4 5))
-    ("Nested expression" (* 4 (+ 2 3)))
-    ("Multiple arguments" (- 10 3 2))
-    ("Division" (/ 20 4))
-    ("Complex nested" (* (+ 1 2) (- 10 5)))
-    ("Power function" (pow 2 3))
-    ("Square root" (sqrt 16))
-    ("Trigonometric" (sin pi))
-    ("Logarithm" (log (exp 1)))
-    ("Absolute value" (abs -5))
-    ("Floor function" (floor 3.7))
-    ("Ceiling function" (ceil 3.2))
+    ("simple addition" (+ 2 3))
+    ("simple multiplication" (* 4 5))
+    ("nested expression" (* 4 (+ 2 3)))
+    ("multiple arguments" (- 10 3 2))
+    ("division" (/ 20 4))
+    ("complex nested" (* (+ 1 2) (- 10 5)))
+    ("power function" (pow 2 3))
+    ("square root" (sqrt 16))
+    ("trigonometric" (sin pi))
+    ("logarithm" (log (exp 1)))
+    ("absolute value" (abs -5))
+    ("floor function" (floor 3.7))
+    ("ceiling function" (ceil 3.2))
   )))
     
     (dolist (example examples)
       (let ((description (car example))
             (expr (cadr example)))
-        (format t "~%~A: ~S~%" description expr)
+        (format t "~%~a: ~s~%" description expr)
         (handler-case
-          (format t "Result: ~A~%" (evaluate-expression expr))
-          (error (e) (format t "Error: ~A~%" e)))))))
+          (format t "result: ~a~%" (evaluate-expression expr))
+          (error (e) (format t "error: ~a~%" e)))))))
 
-;; Interactive mode with enhanced features
+;; interactive mode with enhanced features
 (defun interactive-mode ()
-  "Start an interactive session for evaluating expressions."
-  (format t "~%=== Interactive Expression Evaluator ===~%")
-  (format t "Enter expressions in Lisp format (e.g., (+ 2 3))~%")
-  (format t "Special commands:~%")
-  (format t "  :vars    - List all variables~%")
-  (format t "  :clear   - Clear all variables~%")
-  (format t "  :examples - Run examples~%")
-  (format t "  :quit    - Exit~%~%")
+  "start an interactive session for evaluating expressions."
+  (format t "~%=== interactive expression evaluator ===~%")
+  (format t "enter expressions in lisp format (e.g., (+ 2 3))~%")
+  (format t "special commands:~%")
+  (format t "  :vars    - list all variables~%")
+  (format t "  :clear   - clear all variables~%")
+  (format t "  :examples - run examples~%")
+  (format t "  :quit    - exit~%~%")
   
   (loop
     (format t "> ")
     (force-output)
     (let ((input (read)))
       (cond
-        ((eq input 'quit) (return (format t "Goodbye!~%")))
+        ((eq input 'quit) (return (format t "goodbye!~%")))
         ((eq input ':vars) 
-         (format t "Variables: ~A~%" (list-variables)))
+         (format t "variables: ~a~%" (list-variables)))
         ((eq input ':clear)
          (clear-variables)
-         (format t "All variables cleared.~%"))
+         (format t "all variables cleared.~%"))
         ((eq input ':examples)
          (run-examples))
         (t (handler-case
-             (format t "Result: ~A~%" (evaluate-expression input))
-             (error (e) (format t "Error: ~A~%" e))))))))
+             (format t "result: ~a~%" (evaluate-expression input))
+             (error (e) (format t "error: ~a~%" e))))))))
 
-;; Performance testing
+;; performance testing
 (defun benchmark-evaluation (expr iterations)
-  "Benchmark expression evaluation performance."
+  "benchmark expression evaluation performance."
   (let ((start-time (get-internal-real-time)))
     (dotimes (i iterations)
       (evaluate-expression expr))
     (let ((end-time (get-internal-real-time))
           (total-time (/ (- end-time start-time) internal-time-units-per-second)))
-      (format t "~%Benchmark Results:~%")
-      (format t "Expression: ~S~%" expr)
-      (format t "Iterations: ~A~%" iterations)
-      (format t "Total time: ~,3F seconds~%" total-time)
-      (format t "Average time: ~,6F seconds per evaluation~%" (/ total-time iterations)))))
+      (format t "~%benchmark results:~%")
+      (format t "expression: ~s~%" expr)
+      (format t "iterations: ~a~%" iterations)
+      (format t "total time: ~,3f seconds~%" total-time)
+      (format t "average time: ~,6f seconds per evaluation~%" (/ total-time iterations)))))
 
-;; Load-time message
-(format t "Expression Evaluator loaded successfully!~%")
-(format t "Use (run-examples) to see examples~%")
-(format t "Use (interactive-mode) to start interactive session~%")
-(format t "Use (benchmark-evaluation expr iterations) for performance testing~%")
+;; load-time message
+(format t "expression evaluator loaded successfully!~%")
+(format t "use (run-examples) to see examples~%")
+(format t "use (interactive-mode) to start interactive session~%")
+(format t "use (benchmark-evaluation expr iterations) for performance testing~%")

@@ -1,119 +1,119 @@
-;; Test Suite for Expression Evaluator
-;; Comprehensive testing of all features
+;; test suite for expression evaluator
+;; comprehensive testing of all features
 
-;; Load the main evaluator
+;; load the main evaluator
 (load "main.lisp")
 
-;; Test utilities
+;; test utilities
 (defun assert-equal (expected actual &optional message)
-  "Assert that expected equals actual."
+  "assert that expected equals actual."
   (unless (equal expected actual)
-    (error "Test failed~@[ ~A~]: expected ~A, got ~A" message expected actual)))
+    (error "test failed~@[ ~a~]: expected ~a, got ~a" message expected actual)))
 
 (defun assert-approx (expected actual tolerance &optional message)
-  "Assert that expected approximately equals actual within tolerance."
+  "assert that expected approximately equals actual within tolerance."
   (unless (<= (abs (- expected actual)) tolerance)
-    (error "Test failed~@[ ~A~]: expected ~A, got ~A (tolerance: ~A)" 
+    (error "test failed~@[ ~a~]: expected ~a, got ~a (tolerance: ~a)" 
            message expected actual tolerance)))
 
 (defun run-test (name test-fn)
-  "Run a test and report success/failure."
-  (format t "Running test: ~A~%" name)
+  "run a test and report success/failure."
+  (format t "running test: ~a~%" name)
   (handler-case
     (funcall test-fn)
     (error (e) 
-      (format t "  ❌ FAILED: ~A~%" e)
+      (format t "  failed: ~a~%" e)
       (return-from run-test nil)))
-  (format t "  ✅ PASSED~%")
+  (format t "  passed~%")
   t)
 
-;; Test categories
+;; test categories
 (defun test-basic-arithmetic ()
-  "Test basic arithmetic operations."
-  (assert-equal 5 (evaluate-expression '(+ 2 3)) "Simple addition")
-  (assert-equal 6 (evaluate-expression '(* 2 3)) "Simple multiplication")
-  (assert-equal 1 (evaluate-expression '(- 4 3)) "Simple subtraction")
-  (assert-equal 2 (evaluate-expression '(/ 6 3)) "Simple division")
-  (assert-equal 5 (evaluate-expression '(- 10 3 2)) "Multiple arguments")
-  (assert-equal 20 (evaluate-expression '(* 4 (+ 2 3))) "Nested expressions"))
+  "test basic arithmetic operations."
+  (assert-equal 5 (evaluate-expression '(+ 2 3)) "simple addition")
+  (assert-equal 6 (evaluate-expression '(* 2 3)) "simple multiplication")
+  (assert-equal 1 (evaluate-expression '(- 4 3)) "simple subtraction")
+  (assert-equal 2 (evaluate-expression '(/ 6 3)) "simple division")
+  (assert-equal 5 (evaluate-expression '(- 10 3 2)) "multiple arguments")
+  (assert-equal 20 (evaluate-expression '(* 4 (+ 2 3))) "nested expressions"))
 
 (defun test-mathematical-functions ()
-  "Test mathematical functions."
-  (assert-approx 0.0 (evaluate-expression '(sin pi)) 0.001 "Sine of pi")
-  (assert-approx -1.0 (evaluate-expression '(cos pi)) 0.001 "Cosine of pi")
-  (assert-approx 1.0 (evaluate-expression '(exp 0)) 0.001 "Exponential of 0")
-  (assert-approx 0.0 (evaluate-expression '(log 1)) 0.001 "Log of 1")
-  (assert-equal 5 (evaluate-expression '(abs -5)) "Absolute value")
-  (assert-equal 3 (evaluate-expression '(floor 3.7)) "Floor function")
-  (assert-equal 4 (evaluate-expression '(ceil 3.2)) "Ceiling function"))
+  "test mathematical functions."
+  (assert-approx 0.0 (evaluate-expression '(sin pi)) 0.001 "sine of pi")
+  (assert-approx -1.0 (evaluate-expression '(cos pi)) 0.001 "cosine of pi")
+  (assert-approx 1.0 (evaluate-expression '(exp 0)) 0.001 "exponential of 0")
+  (assert-approx 0.0 (evaluate-expression '(log 1)) 0.001 "log of 1")
+  (assert-equal 5 (evaluate-expression '(abs -5)) "absolute value")
+  (assert-equal 3 (evaluate-expression '(floor 3.7)) "floor function")
+  (assert-equal 4 (evaluate-expression '(ceil 3.2)) "ceiling function"))
 
 (defun test-power-and-root ()
-  "Test power and root functions."
-  (assert-equal 8 (evaluate-expression '(pow 2 3)) "Power function")
-  (assert-equal 4 (evaluate-expression '(sqrt 16)) "Square root")
-  (assert-approx 2.0 (evaluate-expression '(sqrt 4)) 0.001 "Square root of 4")
-  (assert-approx 1.414 (evaluate-expression '(sqrt 2)) 0.001 "Square root of 2"))
+  "test power and root functions."
+  (assert-equal 8 (evaluate-expression '(pow 2 3)) "power function")
+  (assert-equal 4 (evaluate-expression '(sqrt 16)) "square root")
+  (assert-approx 2.0 (evaluate-expression '(sqrt 4)) 0.001 "square root of 4")
+  (assert-approx 1.414 (evaluate-expression '(sqrt 2)) 0.001 "square root of 2"))
 
 (defun test-constants ()
-  "Test mathematical constants."
-  (assert-approx 3.14159 (evaluate-expression 'pi) 0.0001 "Pi constant")
-  (assert-approx 2.71828 (evaluate-expression 'e) 0.0001 "E constant"))
+  "test mathematical constants."
+  (assert-approx 3.14159 (evaluate-expression 'pi) 0.0001 "pi constant")
+  (assert-approx 2.71828 (evaluate-expression 'e) 0.0001 "e constant"))
 
 (defun test-variables ()
-  "Test variable assignment and retrieval."
-  (clear-variables) ; Start with clean environment
-  (assert-equal 10 (evaluate-expression '(set x 10)) "Variable assignment")
-  (assert-equal 10 (evaluate-expression 'x) "Variable retrieval")
-  (assert-equal 20 (evaluate-expression '(set y 20)) "Second variable")
-  (assert-equal 30 (evaluate-expression '(+ x y)) "Variable arithmetic"))
+  "test variable assignment and retrieval."
+  (clear-variables) ; start with clean environment
+  (assert-equal 10 (evaluate-expression '(set x 10)) "variable assignment")
+  (assert-equal 10 (evaluate-expression 'x) "variable retrieval")
+  (assert-equal 20 (evaluate-expression '(set y 20)) "second variable")
+  (assert-equal 30 (evaluate-expression '(+ x y)) "variable arithmetic"))
 
 (defun test-error-handling ()
-  "Test error handling for invalid expressions."
+  "test error handling for invalid expressions."
   (handler-case
     (evaluate-expression '(invalid-op 1 2))
     (error (e) 
-      (assert (search "Unknown operator" (format nil "~A" e)) "Unknown operator error")))
+      (assert (search "unknown operator" (format nil "~a" e)) "unknown operator error")))
   
   (handler-case
     (evaluate-expression '(undefined-var))
     (error (e)
-      (assert (search "Undefined variable" (format nil "~A" e)) "Undefined variable error")))
+      (assert (search "undefined variable" (format nil "~a" e)) "undefined variable error")))
   
   (handler-case
     (evaluate-expression '("not-a-symbol" 1 2))
     (error (e)
-      (assert (search "Operator must be a symbol" (format nil "~A" e)) "Invalid operator error"))))
+      (assert (search "operator must be a symbol" (format nil "~a" e)) "invalid operator error"))))
 
 (defun test-complex-expressions ()
-  "Test complex nested expressions."
-  (assert-equal 25 (evaluate-expression '(* (+ 2 3) (+ 2 3))) "Complex nested")
-  (assert-approx 1.0 (evaluate-expression '(sin (+ pi pi))) 0.001 "Trigonometric with constants")
-  (assert-equal 8 (evaluate-expression '(pow 2 (+ 1 2))) "Power with nested addition"))
+  "test complex nested expressions."
+  (assert-equal 25 (evaluate-expression '(* (+ 2 3) (+ 2 3))) "complex nested")
+  (assert-approx 1.0 (evaluate-expression '(sin (+ pi pi))) 0.001 "trigonometric with constants")
+  (assert-equal 8 (evaluate-expression '(pow 2 (+ 1 2))) "power with nested addition"))
 
 (defun test-performance ()
-  "Test performance with repeated evaluations."
+  "test performance with repeated evaluations."
   (let ((expr '(+ 1 2 3 4 5)))
     (let ((start-time (get-internal-real-time)))
       (dotimes (i 1000)
         (evaluate-expression expr))
       (let ((end-time (get-internal-real-time))
             (total-time (/ (- end-time start-time) internal-time-units-per-second)))
-        (assert (< total-time 1.0) "Performance test: should complete 1000 evaluations in under 1 second")))))
+        (assert (< total-time 1.0) "performance test: should complete 1000 evaluations in under 1 second")))))
 
-;; Main test runner
+;; main test runner
 (defun run-all-tests ()
-  "Run all tests and report results."
-  (format t "~%=== Running Expression Evaluator Tests ===~%")
+  "run all tests and report results."
+  (format t "~%=== running expression evaluator tests ===~%")
   
   (let ((tests '(
-    ("Basic Arithmetic" test-basic-arithmetic)
-    ("Mathematical Functions" test-mathematical-functions)
-    ("Power and Root" test-power-and-root)
-    ("Constants" test-constants)
-    ("Variables" test-variables)
-    ("Error Handling" test-error-handling)
-    ("Complex Expressions" test-complex-expressions)
-    ("Performance" test-performance)
+    ("basic arithmetic" test-basic-arithmetic)
+    ("mathematical functions" test-mathematical-functions)
+    ("power and root" test-power-and-root)
+    ("constants" test-constants)
+    ("variables" test-variables)
+    ("error handling" test-error-handling)
+    ("complex expressions" test-complex-expressions)
+    ("performance" test-performance)
   ))
         (passed 0)
         (total 0))
@@ -123,15 +123,15 @@
       (if (run-test (car test) (cadr test))
           (incf passed)))
     
-    (format t "~%=== Test Results ===~%")
-    (format t "Passed: ~A/~A tests~%" passed total)
+    (format t "~%=== test results ===~%")
+    (format t "passed: ~a/~a tests~%" passed total)
     (if (= passed total)
-        (format t "🎉 All tests passed!~%")
-        (format t "❌ ~A test(s) failed~%" (- total passed)))))
+        (format t "all tests passed!~%")
+        (format t "~a test(s) failed~%" (- total passed)))))
 
-;; Individual test runners for debugging
+;; individual test runners for debugging
 (defun test-specific (test-name)
-  "Run a specific test by name."
+  "run a specific test by name."
   (case test-name
     (arithmetic (test-basic-arithmetic))
     (functions (test-mathematical-functions))
@@ -141,7 +141,7 @@
     (errors (test-error-handling))
     (complex (test-complex-expressions))
     (performance (test-performance))
-    (t (format t "Unknown test: ~A~%" test-name))))
+    (t (format t "unknown test: ~a~%" test-name))))
 
-;; Load-time message
-(format t "Test suite loaded. Use (run-all-tests) to run all tests.~%") 
+;; load-time message
+(format t "test suite loaded. use (run-all-tests) to run all tests.~%") 
