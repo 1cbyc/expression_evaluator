@@ -46,7 +46,7 @@ Install Steel Bank Common Lisp (SBCL):
 - **macOS**: `brew install sbcl`
 - **Linux**: `sudo apt-get install sbcl`
 
-### Basic Usage
+### Basic Usage (per oga)
 
 1. **Interactive mode**:
    ```bash
@@ -73,7 +73,7 @@ Install Steel Bank Common Lisp (SBCL):
    sbcl --load tests.lisp --eval "(run-all-tests)" --quit
    ```
 
-### Using Makefile (Recommended)
+### Using Makefile (I recommend this)
 
 ```bash
 make test          # Run all tests
@@ -82,22 +82,6 @@ make cli           # Start command-line interface
 make examples      # Run example expressions
 make benchmark     # Performance benchmark
 make eval EXPR='(+ 2 3)'  # Quick evaluation
-```
-
-## Project Structure
-
-```
-expression_evaluator/
-├── main.lisp              # Core evaluation engine
-├── tests.lisp             # Comprehensive test suite
-├── cli.lisp               # Command-line interface
-├── Makefile               # Build and test automation
-├── examples/              # Example files
-│   └── expressions.txt    # Sample expressions
-├── docs/                  # Project documentation
-│   ├── what-next.md       # Development roadmap
-│   └── explanation.md     # Detailed project explanation
-└── README.md              # This file
 ```
 
 ## Supported Operations
