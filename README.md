@@ -42,7 +42,7 @@ This program takes mathematical expressions written in Lisp format and calculate
 
 ### Prerequisites
 Install Steel Bank Common Lisp (SBCL):
-- **Windows**: Download from [sbcl.org](http://www.sbcl.org/)
+- **Windows**: Download from [sbcl.org](https://www.sbcl.org/platform-table.html)
 - **macOS**: `brew install sbcl`
 - **Linux**: `sudo apt-get install sbcl`
 
