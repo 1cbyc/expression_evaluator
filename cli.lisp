@@ -1,23 +1,23 @@
-;; Command Line Interface for Expression Evaluator
-;; Provides a user-friendly interface for evaluating expressions
+;; command line interface for expression evaluator
+;; provides a user-friendly interface for evaluating expressions
 
-;; Load the main evaluator
+;; load the main evaluator
 (load "main.lisp")
 
-;; Command-line argument parsing
+;; command-line argument parsing
 (defun parse-command-line-args ()
-  "Parse command line arguments and return a list of options."
+  "parse command line arguments and return a list of options."
   (let ((args (cdr sb-ext:*posix-argv*))
         (options (make-hash-table :test 'equal)))
     
-    ;; Set default options
+    ;; set default options
     (setf (gethash "mode" options) "interactive")
     (setf (gethash "expression" options) nil)
     (setf (gethash "file" options) nil)
     (setf (gethash "test" options) nil)
     (setf (gethash "help" options) nil)
     
-    ;; Parse arguments
+    ;; parse arguments
     (do ((arg-list args (cdr arg-list)))
         ((null arg-list))
       (let ((arg (car arg-list)))
@@ -36,38 +36,38 @@
                 (not (gethash "file" options))
                 (not (string= arg "--help"))
                 (not (string= arg "--test")))
-           ;; Assume it's an expression if no other mode is specified
+           ;; assume it's an expression if no other mode is specified
            (setf (gethash "expression" options) arg)
            (setf (gethash "mode" options) "single")))))
     
     options))
 
-;; Help message
+;; help message
 (defun show-help ()
-  "Display help information."
-  (format t "~%Expression Evaluator - Command Line Interface~%")
+  "display help information."
+  (format t "~%expression evaluator - command line interface~%")
   (format t "==============================================~%~%")
-  (format t "Usage: sbcl --load cli.lisp [options] [expression]~%~%")
-  (format t "Options:~%")
-  (format t "  --help         Show this help message~%")
-  (format t "  --interactive  Start interactive mode (default)~%")
-  (format t "  --expr EXPR    Evaluate a single expression~%")
-  (format t "  --file FILE    Evaluate expressions from a file~%")
-  (format t "  --test         Run test suite~%~%")
-  (format t "Examples:~%")
+  (format t "usage: sbcl --load cli.lisp [options] [expression]~%~%")
+  (format t "options:~%")
+  (format t "  --help         show this help message~%")
+  (format t "  --interactive  start interactive mode (default)~%")
+  (format t "  --expr expr    evaluate a single expression~%")
+  (format t "  --file file    evaluate expressions from a file~%")
+  (format t "  --test         run test suite~%~%")
+  (format t "examples:~%")
   (format t "  sbcl --load cli.lisp --expr \"(+ 2 3)\"~%")
   (format t "  sbcl --load cli.lisp --file expressions.txt~%")
   (format t "  sbcl --load cli.lisp --interactive~%")
   (format t "  sbcl --load cli.lisp --test~%~%")
-  (format t "Expression format: Lisp prefix notation~%")
-  (format t "  (+ 2 3)       ; Addition~%")
-  (format t "  (* 4 (+ 2 3)) ; Nested expressions~%")
-  (format t "  (sin pi)       ; Mathematical functions~%"))
+  (format t "expression format: lisp prefix notation~%")
+  (format t "  (+ 2 3)       ; addition~%")
+  (format t "  (* 4 (+ 2 3)) ; nested expressions~%")
+  (format t "  (sin pi)       ; mathematical functions~%"))
 
-;; File processing
+;; file processing
 (defun process-file (filename)
-  "Process expressions from a file."
-  (format t "Processing file: ~A~%~%" filename)
+  "process expressions from a file."
+  (format t "processing file: ~a~%~%" filename)
   
   (handler-case
     (with-open-file (stream filename :direction :input)
@@ -78,73 +78,73 @@
               do (let ((trimmed-line (string-trim '(#\space #\tab #\newline) line)))
                    (unless (or (string= trimmed-line "")
                               (char= (char trimmed-line 0) #\;))
-                     (format t "Line ~A: ~A~%" line-number trimmed-line)
+                     (format t "line ~a: ~a~%" line-number trimmed-line)
                      (handler-case
                        (let ((expr (read-from-string trimmed-line)))
-                         (format t "Result: ~A~%" (evaluate-expression expr)))
+                         (format t "result: ~a~%" (evaluate-expression expr)))
                        (error (e)
-                         (format t "Error: ~A~%" e)))
+                         (format t "error: ~a~%" e)))
                      (format t "~%"))))))
     (error (e)
-      (format t "Error reading file: ~A~%" e))))
+      (format t "error reading file: ~a~%" e))))
 
-;; Single expression evaluation
+;; single expression evaluation
 (defun evaluate-single-expression (expr-string)
-  "Evaluate a single expression from a string."
+  "evaluate a single expression from a string."
   (handler-case
     (let ((expr (read-from-string expr-string)))
-      (format t "Expression: ~A~%" expr-string)
-      (format t "Result: ~A~%" (evaluate-expression expr)))
+      (format t "expression: ~a~%" expr-string)
+      (format t "result: ~a~%" (evaluate-expression expr)))
     (error (e)
-      (format t "Error parsing expression: ~A~%" e))))
+      (format t "error parsing expression: ~a~%" e))))
 
-;; Enhanced interactive mode
+;; enhanced interactive mode
 (defun enhanced-interactive-mode ()
-  "Start an enhanced interactive session."
-  (format t "~%=== Enhanced Expression Evaluator ===~%")
-  (format t "Type expressions in Lisp format~%")
-  (format t "Special commands:~%")
-  (format t "  :help      - Show help~%")
-  (format t "  :vars      - List variables~%")
-  (format t "  :clear     - Clear variables~%")
-  (format t "  :examples  - Run examples~%")
-  (format t "  :test      - Run test suite~%")
-  (format t "  :benchmark - Run performance benchmark~%")
-  (format t "  :quit      - Exit~%~%")
+  "start an enhanced interactive session."
+  (format t "~%=== enhanced expression evaluator ===~%")
+  (format t "type expressions in lisp format~%")
+  (format t "special commands:~%")
+  (format t "  :help      - show help~%")
+  (format t "  :vars      - list variables~%")
+  (format t "  :clear     - clear variables~%")
+  (format t "  :examples  - run examples~%")
+  (format t "  :test      - run test suite~%")
+  (format t "  :benchmark - run performance benchmark~%")
+  (format t "  :quit      - exit~%~%")
   
   (loop
     (format t "> ")
     (force-output)
     (let ((input (read)))
       (cond
-        ((eq input 'quit) (return (format t "Goodbye!~%")))
+        ((eq input 'quit) (return (format t "goodbye!~%")))
         ((eq input ':help)
          (show-help))
         ((eq input ':vars) 
-         (format t "Variables: ~A~%" (list-variables)))
+         (format t "variables: ~a~%" (list-variables)))
         ((eq input ':clear)
          (clear-variables)
-         (format t "All variables cleared.~%"))
+         (format t "all variables cleared.~%"))
         ((eq input ':examples)
          (run-examples))
         ((eq input ':test)
          (load "tests.lisp")
          (run-all-tests))
         ((eq input ':benchmark)
-         (format t "Enter expression to benchmark: ")
+         (format t "enter expression to benchmark: ")
          (force-output)
          (let ((expr (read)))
-           (format t "Enter number of iterations: ")
+           (format t "enter number of iterations: ")
            (force-output)
            (let ((iterations (read)))
              (benchmark-evaluation expr iterations))))
         (t (handler-case
-             (format t "Result: ~A~%" (evaluate-expression input))
-             (error (e) (format t "Error: ~A~%" e))))))))
+             (format t "result: ~a~%" (evaluate-expression input))
+             (error (e) (format t "error: ~a~%" e))))))))
 
-;; Main CLI function
+;; main cli function
 (defun main ()
-  "Main entry point for the command-line interface."
+  "main entry point for the command-line interface."
   (let ((options (parse-command-line-args)))
     
     (cond
@@ -164,7 +164,7 @@
       (t
        (enhanced-interactive-mode)))))
 
-;; Auto-run main if this file is loaded directly
+;; auto-run main if this file is loaded directly
 #+sbcl
 (when (member "--load" sb-ext:*posix-argv* :test 'string=)
   (main)) 
