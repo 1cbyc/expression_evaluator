@@ -1,4 +1,4 @@
-# development phases
+# development phases for this
 
 ## phase 1: core expression evaluator (complete)
 - [x] basic arithmetic operations (+, -, *, /)
