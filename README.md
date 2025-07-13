@@ -1,6 +1,6 @@
 # Expression Evaluator
 
-A simple mathematical expression evaluator written in Common Lisp. This project demonstrates how to build a recursive expression parser that can handle basic arithmetic operations.
+This is a simple mathematical expression evaluator I wrote in Common Lisp. This project just shows how to build a recursive expression parser that can handle basic arithmetic operations. Had an exam that made me do this 9 months ago.
 
 ## What it does
 
@@ -41,20 +41,9 @@ This approach naturally handles nested expressions and multiple arguments.
 - `*` : Multiplication
 - `/` : Division
 
-## Project structure
-
-```
-expression_evaluator/
-├── main.lisp          # Main evaluation logic
-├── docs/              # Project documentation
-│   ├── what-next.md   # Development roadmap
-│   └── explanation.md # Detailed project explanation
-└── README.md          # This file
-```
-
 ## Why Lisp?
 
-Lisp's list-based syntax makes it perfect for representing mathematical expressions. The recursive nature of the language also makes the evaluation algorithm straightforward to implement.
+I use Lisp, Python and R for my doctorate. Besides, Lisp's list-based syntax makes it perfect for representing mathematical expressions. The recursive nature of the language also makes the evaluation algorithm straightforward to implement.
 
 ## Getting started
 
@@ -64,14 +53,8 @@ If you're new to Lisp, this project is a great way to learn about:
 - Functional programming
 - Expression parsing
 
-## Contributing
-
-Feel free to add new features like:
+### Know better and want to help me? Feel free to add new features like:
 - More mathematical functions (sin, cos, etc.)
 - Variable support
 - Better error handling
 - Command-line interface
-
-## License
-
-This project is open source. See the LICENSE file for details. 
