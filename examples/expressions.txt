@@ -1,0 +1,19 @@
+; Example expressions for testing the file processor
+; Lines starting with ; are comments and will be ignored
+
+(+ 2 3)
+(* 4 5)
+(- 10 3 2)
+(/ 20 4)
+(* (+ 2 3) (+ 2 3))
+(sin pi)
+(cos pi)
+(pow 2 3)
+(sqrt 16)
+(abs -5)
+(floor 3.7)
+(ceil 3.2)
+(set x 10)
+(+ x 5)
+(set y 20)
+(* x y) 
