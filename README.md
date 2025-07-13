@@ -20,9 +20,9 @@ This program takes mathematical expressions written in Lisp format and calculate
 (+ x 5)            ; Returns 15 (using variable)
 ```
 
-## Features
+## WHat it can do
 
-### Core Functionality
+### Main FUnctions
 - **Basic arithmetic**: `+`, `-`, `*`, `/`, `%`
 - **Mathematical functions**: `sin`, `cos`, `tan`, `log`, `exp`, `abs`, `floor`, `ceil`
 - **Power and roots**: `pow`, `sqrt`
@@ -30,7 +30,7 @@ This program takes mathematical expressions written in Lisp format and calculate
 - **Variables**: Dynamic variable assignment and retrieval
 - **Error handling**: Comprehensive error messages for invalid expressions
 
-### Advanced Features
+### Advanced Feats
 - **Interactive mode**: REPL for testing expressions
 - **Command-line interface**: Process expressions from command line
 - **File processing**: Evaluate expressions from text files
@@ -38,7 +38,7 @@ This program takes mathematical expressions written in Lisp format and calculate
 - **Test suite**: Comprehensive testing framework
 - **Pretty printing**: Formatted expression output
 
-## Quick Start
+## TO USe this Tool
 
 ### Prerequisites
 Install Steel Bank Common Lisp (SBCL):
